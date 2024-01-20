@@ -1,9 +1,9 @@
 INCLUDES = /usr/local/include/opencv4
-FILE = OCRDetection
+FILE = ImageToDoc
 CXX = g++
 CPPFLAGS = -I$(INCLUDES) -Wall -Werror -g -O0 -std=c++11
 LDFLAGS = -L/opt/bin -L/opt/lib
-LDLIBS = -lopencv_videoio -lopencv_imgcodecs -lopencv_highgui -lopencv_imgproc -lopencv_core -lopencv_objdetect -ltesseract
+LDLIBS = -lopencv_videoio -lopencv_imgcodecs -lopencv_highgui -lopencv_imgproc -lopencv_core -lopencv_objdetect -ltesseract -lleptonica
 
 all: $(FILE).out
 
