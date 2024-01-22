@@ -16,7 +16,7 @@ int main()
 
     api->Init(NULL, "eng",OEM_LSTM_ONLY);
     api->SetPageSegMode(tesseract::PSM_AUTO);
-    api->SetImage(im.data, im.cols, im.rows, 3, im.step);
+    //api->SetImage(im.data, im.cols, im.rows, 3, im.step);
     outText = string(api->GetUTF8Text());
     cout << outText;
     api->End();
