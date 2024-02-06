@@ -1,18 +1,39 @@
+#$INCLUDES += -I/usr/local/include/opencv4
 #INCLUDES = /usr/local/include/opencv4
-INCLUDES = /opt/opencv_4.5.2/include/opencv4/
-FILE = lableReading
-CXX = g++					
-CPPFLAGS = -I$(INCLUDES) -Wall -Werror -g -O0 -std=c++11
-LDFLAGS = -L/opt/opencv_4.5.2/bin -L/opt/opencv_4.5.2/lib
-LDLIBS = -lopencv_videoio -lopencv_imgcodecs -lopencv_highgui -lopencv_imgproc -lopencv_core
+INCLUDES += -I/opt/opencv_4.5.2/include/opencv4/
+INCLUDES += -I/home/ubilinux/scp/hikv_camera/
+INCLUDES += -I/opt/MVS/include/
+CPP_FILES = lableReading.cpp \
+			hikv_camera/hikv_camera.cpp
 
-all: $(FILE).out
+FILE = openCV
+CXX = g++
+CSTD = c++11
+CPPFLAGS += -Wall -Werror -Wpedantic -g -O0 -std=$(CSTD)
 
-$(FILE).out: $(FILE).cpp
-	$(CXX) $(CPPFLAGS) $^ $(LDFLAGS) $(LDLIBS) -o $@
+LDPATH += -L/usr/local/lib/
+LDPATH += -L/opt/opencv_4.5.2/lib/
+LDPATH += -L/opt/MVS/lib/64/
+LDFLAGS += -lopencv_core -lopencv_imgcodecs -lopencv_highgui -lopencv_videoio -lopencv_imgproc -lopencv_core -lopencv_objdetect -ltesseract -lleptonica -lMvCameraControl
 
-run: all
+OBJS:=$(CPP_FILES:.cpp=.o)
+
+%.o: %.cpp 
+	$(CXX) $(CPPFLAGS) $(INCLUDES) -c $< -o $@
+
+$(FILE).out: $(OBJS)
+	$(CXX) $(CPPFLAGS) $(LDPATH) $^ -o $(FILE).out $(LDFLAGS)
+
+.PHONY: build 
+build: all
+
+all: 
+	make $(FILE).out	
+
+run:
+	make clean
+	make all
 	./$(FILE).out
 
 clean:
-	rm -f *.out
+	rm -f *.out *.o **/*.o
